@@ -1,0 +1,30 @@
+{
+  "name": "fullstack_osa3",
+  "version": "1.0.0",
+  "description": "fullstack osa3",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "test",
+    "watch": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ollisami/fullstack_osa3.git"
+  },
+  "author": "Sami Ollila",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ollisami/fullstack_osa3/issues"
+  },
+  "homepage": "https://github.com/ollisami/fullstack_osa3#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "morgan-body": "^2.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}

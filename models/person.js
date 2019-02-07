@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false)
 
 const url = process.env.MONGODB_URI
 
@@ -15,7 +16,6 @@ mongoose.connect(url, { useNewUrlParser: true })
   const personSchema = new mongoose.Schema({
     name: String,
     number: String,
-    id: String,
   })
 
   personSchema.set('toJSON', {

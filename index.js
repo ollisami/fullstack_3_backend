@@ -1,9 +1,11 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const morganBody = require('morgan-body')
 const cors = require('cors')
+const Person = require('./models/person')
 
 app.use(express.static('build'))
 app.use(cors())
@@ -36,7 +38,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Person.find({}).then(result => {
+    res.json(result.map(person => person.toJSON()))
+  })
 })
 
 app.get('/info', (req, res) => {
@@ -46,14 +50,9 @@ app.get('/info', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id)
-    let person = persons.find(person => person.id === id)
-    if(person) {
-        res.send(person)
-    } else {
-        console.log(`Henkilöä ${id} ei löydy`)
-        res.status(404).end()
-    }
+    Person.findById(req.params.id).then(person => {
+        res.json(person.toJSON())
+      })
 });
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -85,8 +84,9 @@ app.delete('/api/persons/:number', (req, res) => {
 });
 
 app.post('/api/persons', (req, res) => {
-    const newId  = Math.floor(Math.random() * 1000000)
     const person = req.body
+    const newId  = Math.floor(Math.random() * 1000000)
+
     let errorMsg;
     if (!person.name && !person.number) errorMsg = "Anna nimi ja numero"
     else if(!person.name) errorMsg = "Nimi puuttuu"
@@ -98,14 +98,18 @@ app.post('/api/persons', (req, res) => {
         res.status(500).send({ error: errorMsg})
 
     } else {
-        person.id = newId 
-        persons = persons.concat(person)
-        res.json(person)
+        const p = new Person({
+            name: person.name,
+            number: person.number,
+            id: newId,
+        })
+        p.save().then(savedPerson => {
+            res.json(savedPerson.toJSON())
+        })
     }
-    console.log( JSON.stringify(res.json()))
   })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })

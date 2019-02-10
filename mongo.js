@@ -26,16 +26,16 @@ const person = new Person({
 })
 
 if (env_name && env_number) {
-person.save().then(response => {
-  console.log(`lisätään ${env_name} numero ${env_number} luetteloon`);
-  mongoose.connection.close();
-})
+  person.save().then(response => {
+    console.log(`lisätään ${env_name} numero ${env_number} luetteloon`)
+    mongoose.connection.close()
+  })
 } else {
-    Person.find({}).then(result => {
-        console.log('Puhelinluettelo:')
-        result.forEach(person => {
-        console.log(`${person.name}  ${person.number}`)
-        })
-        mongoose.connection.close()
+  Person.find({}).then(result => {
+    console.log('Puhelinluettelo:')
+    result.forEach(person => {
+      console.log(`${person.name}  ${person.number}`)
     })
+    mongoose.connection.close()
+  })
 }
